@@ -35,7 +35,7 @@ Jess yourself using git, maven and java.
         cd jess
         mvn clean install
         JESS_EXECUTABLE_JAR=$(ls target | sort | grep ^jess | head -1)
-        cp target/${JESS_EXECUTABLE_JAR} bin/jess.jar
+        mkdir bin; cp target/${JESS_EXECUTABLE_JAR} bin/jess.jar
         ```
 The executable Jess jar is now at `bin/jess.jar` and can be executed like any 
 regular jar using for example
