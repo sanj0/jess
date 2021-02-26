@@ -2,3 +2,5 @@
 /target/
 .DS_STORE
 /.idea/
+# bin dir for later building of the executable
+/bin/
