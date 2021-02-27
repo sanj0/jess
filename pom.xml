@@ -6,7 +6,7 @@
 
     <groupId>de.sanj0</groupId>
     <artifactId>jess</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
 
     <name>Jess</name>
     <url>https://github.com/sanj0/jess/</url>
