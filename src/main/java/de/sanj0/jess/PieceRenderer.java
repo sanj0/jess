@@ -16,7 +16,7 @@ import static de.sanj0.jess.Piece.*;
  * Renders chess pieces.
  * <p>
  * The png located at /src/main/resources/img/pieces.png is from Sebastian Lague
- * on github, copyright notice in /src/main/resources/img/copyright.txt
+ * on github, copyright notice in /src/main/resources/img/pieces.copyright.txt
  */
 public class PieceRenderer {
     /**
