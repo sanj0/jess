@@ -17,11 +17,10 @@ public class Board {
     }
 
     /**
-     * Moves the piece from index start
-     * to index end
+     * Moves the piece from index start to index end
      *
      * @param start the index of the piece to move
-     * @param end the destination square of the move
+     * @param end   the destination square of the move
      */
     public void move(final int start, final int end) {
         // check for legality

@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 public class ChessScene extends Scene {
 
     private final Board board;
-    private BoardRenderer boardRenderer;
+    private final BoardRenderer boardRenderer;
 
     public ChessScene(final Board board) {
         this.board = board;

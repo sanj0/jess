@@ -23,16 +23,12 @@ public class BoardRenderer extends DrawingRoutine {
     public static final Color DARK_COLOR = new Color(83, 103, 47);
     public static final Color HOVER_COLOR = new Color(255, 103, 47, 127);
     public static final Color LEGAL_MOVE_COLOR = new Color(255, 109, 172, 127);
-
-    private MoveState moveState =
-            new MoveState(-1, -1, new ArrayList<>(), Piece.NONE);
-
     public static final Vector2f origin = Vector2f.zero();
     public static final Dimensions squareSize = new Dimensions(100, 100);
-
-    private SaltyImage boardImage;
-
     private final Board board;
+    private MoveState moveState =
+            new MoveState(-1, -1, new ArrayList<>(), Piece.NONE);
+    private final SaltyImage boardImage;
 
     public BoardRenderer(final Board board) {
         super(DrawingPosition.BEFORE_GAMEOBJECTS);
@@ -60,6 +56,13 @@ public class BoardRenderer extends DrawingRoutine {
                 isLight = !isLight;
             }
         }
+    }
+
+    public static int indexOfPosition(final float x, final float y) {
+        final int rank = (int) Math.floor(x / squareSize.getWidth());
+        final int file = (int) Math.floor(y / squareSize.getHeight());
+        // weird that it only works seemingly the wrong way...?
+        return file * 8 + rank;
     }
 
     @Override
@@ -107,13 +110,6 @@ public class BoardRenderer extends DrawingRoutine {
         final float pieceX = cursor.getX() - width * .5f;
         final float pieceY = cursor.getY() - width * .5f;
         PieceRenderer.drawPiece(g, moveState.getDraggedPiece(), new Transform(pieceX, pieceY, width, height));
-    }
-
-    public static int indexOfPosition(final float x, final float y) {
-        final int rank = (int) Math.floor(x / squareSize.getWidth());
-        final int file = (int) Math.floor(y / squareSize.getHeight());
-        // weird that it only works seemingly the wrong way...?
-        return file * 8 + rank;
     }
 
     /**

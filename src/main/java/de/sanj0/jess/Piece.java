@@ -18,10 +18,10 @@ public class Piece {
     public static byte COLOR_MASK = (byte) (LIGHT_MASK | DARK_MASK);
 
     /**
-     * Casts the given int to
-     * a byte and return it
+     * Casts the given int to a byte and return it
      *
      * @param i an int
+     *
      * @return the int casted to a byte
      */
     public static byte b(final int i) {
