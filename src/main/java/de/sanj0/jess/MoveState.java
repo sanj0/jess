@@ -1,6 +1,5 @@
 package de.sanj0.jess;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
