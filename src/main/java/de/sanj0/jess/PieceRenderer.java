@@ -13,8 +13,10 @@ import java.util.Map;
 import static de.sanj0.jess.Piece.*;
 
 /**
- * Renders pieces the png is from Sebastian Lague on github, copyright notice in
- * /src/main/resources/img/copyright.txt
+ * Renders chess pieces.
+ * <p>
+ * The png located at /src/main/resources/img/pieces.png is from Sebastian Lague
+ * on github, copyright notice in /src/main/resources/img/copyright.txt
  */
 public class PieceRenderer {
     /**
