@@ -46,11 +46,6 @@ public class ChessScene extends Scene {
             }
 
             @Override
-            public void mouseDragged(final MouseEvent e) {
-                super.mouseDragged(e);
-            }
-
-            @Override
             public void mouseMoved(final MouseEvent e) {
                 boardRenderer.getMoveState().setHoveredSquare(BoardRenderer.indexOfPosition(e.getX(), e.getY()));
             }
