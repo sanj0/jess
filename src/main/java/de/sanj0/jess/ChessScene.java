@@ -27,8 +27,6 @@ public class ChessScene extends Scene {
                 final int draggedPieceIndex = BoardRenderer.indexOfPosition(e.getX(), e.getY());
                 moveState.setDraggedPieceIndex(draggedPieceIndex);
                 moveState.setDraggedPiece(board.getPosition()[draggedPieceIndex]);
-                //TODO(sanj0): upgrade from pseudo legal moves to legal moves only
-                //legalMoves = Moves.pseudoLegalMoves(board.getPosition(), draggedPieceIndex);
             }
 
             @Override
