@@ -39,8 +39,8 @@ public class ChessScene extends Scene {
                     // move back to origin
                     final int position = BoardRenderer.indexOfPosition(e.getX(), e.getY());
                     if (position != moveState.getDraggedPieceIndex()) {
-                        board.getPosition()[BoardRenderer.indexOfPosition(e.getX(), e.getY())] = moveState.getDraggedPiece();
-                        board.getPosition()[moveState.getDraggedPieceIndex()] = Piece.NONE;
+                        final Move move = Moves.move(board.getPosition(), moveState.getDraggedPieceIndex(), BoardRenderer.indexOfPosition(e.getX(), e.getY()));
+                        move.doMove(board.getPosition());
                     }
                     moveState.setDraggedPieceIndex(-1);
                     moveState.setDraggedPiece(Piece.NONE);
