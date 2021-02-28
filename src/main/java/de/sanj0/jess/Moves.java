@@ -4,9 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Calculating knight moves
+ * Moves
  */
 public class Moves {
+
+    public static Move move(final byte[] position, final int startIndex, final int endIndex) {
+        final int[] indices = {startIndex, endIndex};
+        final byte[] before = {position[startIndex], position[endIndex]};
+        final byte[] after = {Piece.NONE, position[startIndex]};
+        return new Move(indices, before, after);
+    }
 
     public static List<Integer> pseudoLegalMoves(final byte[] board, final int position) {
         final byte piece = board[position];
