@@ -24,7 +24,7 @@ public class BoardRenderer extends DrawingRoutine {
     public static final Color HOVER_COLOR = new Color(255, 103, 47, 127);
     public static final Color LEGAL_MOVE_COLOR = new Color(255, 109, 172, 127);
     public static final Vector2f origin = Vector2f.zero();
-    public static final Dimensions squareSize = new Dimensions(100, 100);
+    public static final Dimensions SQUARE_SIZE = new Dimensions(100, 100);
     private final Board board;
     private MoveState moveState =
             new MoveState(-1, -1, new ArrayList<>(), Piece.NONE);
@@ -41,8 +41,8 @@ public class BoardRenderer extends DrawingRoutine {
         final SaltyGraphics g = boardImage.getGraphics();
         float x = origin.getX();
         float y = origin.getY();
-        float width = squareSize.getWidth();
-        float height = squareSize.getHeight();
+        float width = SQUARE_SIZE.getWidth();
+        float height = SQUARE_SIZE.getHeight();
         boolean isLight = true;
         for (int i = 0; i < 64; i++) {
             g.setColor(isLight ? LIGHT_COLOR : DARK_COLOR);
@@ -59,15 +59,28 @@ public class BoardRenderer extends DrawingRoutine {
     }
 
     public static int indexOfPosition(final float x, final float y) {
-        final int rank = (int) Math.floor(x / squareSize.getWidth());
-        final int file = (int) Math.floor(y / squareSize.getHeight());
+        final int rank = (int) Math.floor(x / SQUARE_SIZE.getWidth());
+        final int file = (int) Math.floor(y / SQUARE_SIZE.getHeight());
         // weird that it only works seemingly the wrong way...?
         return file * 8 + rank;
+    }
+
+    public static Vector2f centreOfHoveredSquare(final float x, final float y) {
+        float cx;
+        float cy;
+
+        cx = (float) Math.floor(x / SQUARE_SIZE.getWidth()) * SQUARE_SIZE.getWidth() + SQUARE_SIZE.getWidth() / 2f;
+        cy = (float) Math.floor(y / SQUARE_SIZE.getHeight()) * SQUARE_SIZE.getHeight() + SQUARE_SIZE.getHeight() / 2f;
+        return new Vector2f(cx, cy);
     }
 
     @Override
     public void draw(final SaltyGraphics g) {
         g.drawImage(boardImage, 0, 0);
+
+        for (int i = 0; i < moveState.getSquareMarks().size(); i++) {
+            moveState.getSquareMarks().get(i).draw(g.copy());
+        }
 
         /*
         g.setColor(LEGAL_MOVE_COLOR);
@@ -82,8 +95,8 @@ public class BoardRenderer extends DrawingRoutine {
         final byte[] position = board.getPosition();
         float x = origin.getX();
         float y = origin.getY();
-        float width = squareSize.getWidth();
-        float height = squareSize.getHeight();
+        float width = SQUARE_SIZE.getWidth();
+        float height = SQUARE_SIZE.getHeight();
         for (int i = 0; i < position.length; i++) {
             final byte piece = position[i];
 
@@ -105,6 +118,10 @@ public class BoardRenderer extends DrawingRoutine {
             } else {
                 x += width;
             }
+        }
+
+        for (int i = 0; i < moveState.getArrows().size(); i++) {
+            moveState.getArrows().get(i).draw(g.copy());
         }
         final Vector2f cursor = Input.getCursorPosition();
         final float pieceX = cursor.getX() - width * .5f;

@@ -66,7 +66,7 @@ public class PieceRenderer {
      * querying an image from the {@link #imageMap map} and drawing it at the
      * position of the given {@link Transform}, ignoring its size and instead
      * using the default size of the queried image, which is equal to {@link
-     * BoardRenderer#squareSize}.
+     * BoardRenderer#SQUARE_SIZE}.
      *
      * @param g         the graphics to render to
      * @param piece     the piece to render
@@ -85,8 +85,8 @@ public class PieceRenderer {
      */
     public static void init() {
         final Spritesheet spritesheet = new Spritesheet(sheet, 333.33f, 334f);
-        final float width = BoardRenderer.squareSize.getWidth();
-        final float height = BoardRenderer.squareSize.getHeight();
+        final float width = BoardRenderer.SQUARE_SIZE.getWidth();
+        final float height = BoardRenderer.SQUARE_SIZE.getHeight();
 
         for (int y = 0; y < SPRITE_ROWS; y++) {
             for (int x = 0; x < SPRITES_PER_ROW; x++) {

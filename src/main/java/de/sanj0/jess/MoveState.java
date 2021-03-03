@@ -1,5 +1,6 @@
 package de.sanj0.jess;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -14,6 +15,9 @@ public class MoveState {
 
     private final Stack<Move> moveStack = new Stack<>();
     private final Stack<Move> redoStack = new Stack<>();
+
+    private final List<Arrow> arrows = new ArrayList<>();
+    private final List<SquareMark> squareMarks = new ArrayList<>();
 
     public MoveState(final int hoveredSquare, final int draggedPieceIndex,
                      final List<Integer> legalMoves, final byte draggedPiece) {
@@ -46,6 +50,40 @@ public class MoveState {
     public void clearMoveStacks() {
         moveStack.clear();
         redoStack.clear();
+    }
+
+    public void toggleSquareMark(final SquareMark m) {
+        if (squareMarks.contains(m)) {
+            squareMarks.removeIf(a -> a.equals(m));
+        } else {
+            squareMarks.add(m);
+        }
+    }
+
+    public void toggleArrow(final Arrow arrow) {
+        if (arrows.contains(arrow)) {
+            arrows.removeIf(a -> a.equals(arrow));
+        } else {
+            arrows.add(arrow);
+        }
+    }
+
+    /**
+     * Gets {@link #arrows}.
+     *
+     * @return the value of {@link #arrows}
+     */
+    public List<Arrow> getArrows() {
+        return arrows;
+    }
+
+    /**
+     * Gets {@link #squareMarks}.
+     *
+     * @return the value of {@link #squareMarks}
+     */
+    public List<SquareMark> getSquareMarks() {
+        return squareMarks;
     }
 
     /**

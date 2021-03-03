@@ -4,6 +4,7 @@ import de.edgelord.saltyengine.input.Input;
 import de.edgelord.saltyengine.input.KeyboardInputAdapter;
 import de.edgelord.saltyengine.input.MouseInputAdapter;
 import de.edgelord.saltyengine.scene.Scene;
+import de.edgelord.saltyengine.transform.Vector2f;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -23,6 +24,17 @@ public class ChessScene extends Scene {
         addDrawingRoutine(boardRenderer);
 
         Input.addMouseInputHandler(new MouseInputAdapter() {
+            private Vector2f arrowStart = null;
+
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                // remove all marks on double click of right mouse btn
+                if (e.getButton() == MouseEvent.BUTTON3 && e.getClickCount() == 2) {
+                    boardRenderer.getMoveState().getSquareMarks().clear();
+                    boardRenderer.getMoveState().getArrows().clear();
+                }
+            }
+
             @Override
             public void mousePressed(final MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
@@ -30,6 +42,8 @@ public class ChessScene extends Scene {
                     final int draggedPieceIndex = BoardRenderer.indexOfPosition(e.getX(), e.getY());
                     moveState.setDraggedPieceIndex(draggedPieceIndex);
                     moveState.setDraggedPiece(board.getPosition()[draggedPieceIndex]);
+                } else if (e.getButton() == MouseEvent.BUTTON3) {
+                    arrowStart = BoardRenderer.centreOfHoveredSquare(e.getX(), e.getY());
                 }
             }
 
@@ -47,6 +61,20 @@ public class ChessScene extends Scene {
                     }
                     moveState.setDraggedPieceIndex(-1);
                     moveState.setDraggedPiece(Piece.NONE);
+                } else if (e.getButton() == MouseEvent.BUTTON3) {
+                    if (arrowStart != null) {
+                        final Vector2f arrowEnd = BoardRenderer.centreOfHoveredSquare(e.getX(), e.getY());
+                        if (arrowStart.equals(arrowEnd)) {
+                            // toggle mark instead
+                            final int x = (int) (arrowStart.getX() - BoardRenderer.SQUARE_SIZE.getWidth() * .5f);
+                            final int y = (int) (arrowStart.getY() - BoardRenderer.SQUARE_SIZE.getHeight() * .5f);
+                            boardRenderer.getMoveState().toggleSquareMark(new SquareMark(new Vector2f(x, y)));
+                        } else {
+                            // toggle arrow
+                            boardRenderer.getMoveState().toggleArrow(new Arrow(arrowStart, arrowEnd));
+                        }
+                        arrowStart = null;
+                    }
                 }
             }
 
