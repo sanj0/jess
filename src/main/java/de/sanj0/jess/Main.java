@@ -9,5 +9,6 @@ public class Main extends Game {
         init(GameConfig.config(800, 800, "Jess", 5));
         PieceRenderer.init();
         start(30, new ChessScene(new Board(BoardPositions.parseFEN(BoardPositions.STARTING_POSITION))));
+        Game.setDrawFPS(false);
     }
 }
