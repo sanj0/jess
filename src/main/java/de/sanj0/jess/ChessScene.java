@@ -1,9 +1,11 @@
 package de.sanj0.jess;
 
 import de.edgelord.saltyengine.input.Input;
+import de.edgelord.saltyengine.input.KeyboardInputAdapter;
 import de.edgelord.saltyengine.input.MouseInputAdapter;
 import de.edgelord.saltyengine.scene.Scene;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class ChessScene extends Scene {
@@ -50,6 +52,16 @@ public class ChessScene extends Scene {
             @Override
             public void mouseMoved(final MouseEvent e) {
                 boardRenderer.getMoveState().setHoveredSquare(BoardRenderer.indexOfPosition(e.getX(), e.getY()));
+            }
+        });
+
+        Input.addKeyboardInputHandler(new KeyboardInputAdapter() {
+            @Override
+            public void keyTyped(final KeyEvent e) {
+                if (e.getKeyChar() == 'r') {
+                    // reset position
+                    board.setPosition(BoardPositions.parseFEN(Main.STARTING_FEN));
+                }
             }
         });
     }
