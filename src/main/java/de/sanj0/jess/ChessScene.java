@@ -58,6 +58,7 @@ public class ChessScene extends Scene {
                         final Move move = Moves.move(board.getPosition(), moveState.getDraggedPieceIndex(), BoardRenderer.indexOfPosition(e.getX(), e.getY()));
                         move.doMove(board.getPosition());
                         moveState.pushMove(move);
+                        moveState.getRedoStack().clear();
                     }
                     moveState.setDraggedPieceIndex(-1);
                     moveState.setDraggedPiece(Piece.NONE);
