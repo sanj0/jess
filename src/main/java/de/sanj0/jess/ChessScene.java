@@ -43,6 +43,7 @@ public class ChessScene extends Scene {
                     if (position != moveState.getDraggedPieceIndex()) {
                         final Move move = Moves.move(board.getPosition(), moveState.getDraggedPieceIndex(), BoardRenderer.indexOfPosition(e.getX(), e.getY()));
                         move.doMove(board.getPosition());
+                        moveState.pushMove(move);
                     }
                     moveState.setDraggedPieceIndex(-1);
                     moveState.setDraggedPiece(Piece.NONE);
@@ -56,11 +57,34 @@ public class ChessScene extends Scene {
         });
 
         Input.addKeyboardInputHandler(new KeyboardInputAdapter() {
+            private int buttonDown = -1;
+
+            @Override
+            public void keyPressed(final KeyEvent e) {
+                buttonDown = e.getKeyCode();
+            }
+
+            @Override
+            public void keyReleased(final KeyEvent e) {
+                // "key typed"
+                if (buttonDown == e.getKeyCode()) {
+                    if (buttonDown == KeyEvent.VK_LEFT) {
+                        //undo move
+                        boardRenderer.getMoveState().undoMove(board.getPosition());
+                    } else if (buttonDown == KeyEvent.VK_RIGHT) {
+                        //redo move
+                        boardRenderer.getMoveState().redoMove(board.getPosition());
+                    }
+                    buttonDown = -1;
+                }
+            }
+
             @Override
             public void keyTyped(final KeyEvent e) {
                 if (e.getKeyChar() == 'r') {
                     // reset position
                     board.setPosition(BoardPositions.parseFEN(Main.STARTING_FEN));
+                    boardRenderer.getMoveState().clearMoveStacks();
                 }
             }
         });
