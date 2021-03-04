@@ -76,7 +76,7 @@ public class BishopMoveGenerator extends MoveGenerator {
                 if (blockedFrom.getOrDefault(d, 100) > distance) {
                     // new nearer piece that blocks the diagonal
                     blockedFrom.put(d, distance);
-                    if (capturesToRetain.getOrDefault(d, 100) > distance) {
+                    if (Math.abs(capturesToRetain.getOrDefault(d, 100) - origin) > distance) {
                         // capture has to be removed, new one will be added
                         // directly after if the piece if an enemy
                         capturesToRetain.remove(d);
