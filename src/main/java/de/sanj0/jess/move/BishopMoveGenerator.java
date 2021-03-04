@@ -3,7 +3,9 @@ package de.sanj0.jess.move;
 import de.sanj0.jess.Piece;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BishopMoveGenerator extends MoveGenerator {
 
@@ -44,28 +46,74 @@ public class BishopMoveGenerator extends MoveGenerator {
     };
 
     @Override
+    public List<Integer> pseudoLegalMoves(final byte[] board, final int origin) {
+        return filter0(super.pseudoLegalMoves(board, origin), board, origin);
+    }
+
+    @Override
     protected int[][] moveSchemesUpperHalf() {
         return BISHOP_MOVES_UPPER_HALF;
     }
 
-    @Override
-    protected void removeFriendlyFire(final List<Integer> moves, final byte[] board, final int myIndex) {
-        final byte myColor = Piece.color(board[myIndex]);
-        final List<Integer> blockedDiagonalsOffset = new ArrayList<>();
-
-        //TODO(sanj0) doesn't quite work yet (b34n52 - 16 not included but 61)
-        for (final int i : moves) {
-            if (Piece.color(board[i]) == myColor) {
-                blockedDiagonalsOffset.add(i - myIndex);
-            }
-        }
-        moves.removeIf(i -> {
-            for (final int d : blockedDiagonalsOffset) {
-                if ((i - myIndex) % d == 0) {
-                    return true;
+    // filters out friendly fire and
+    // sorts out captures, i.e. doesnt allow
+    // to move past captures
+    private List<Integer> filter0(final List<Integer> moves, final byte[] board, final int origin) {
+        final List<Integer> filteredMoves = new ArrayList<>(moves.size());
+        final byte myColor = Piece.color(board[origin]);
+        final List<Integer> blockedDiagonalIDs = new ArrayList<>(4);
+        // which square are the respective diagonals blocked from?
+        final Map<Integer, Integer> blockedFrom = new HashMap<>();
+        // enables us to handle captures the same way as friendly fire -
+        // just store the captures to be retained here
+        // key is the diagonal ID, value the capture
+        final Map<Integer, Integer> capturesToRetain = new HashMap<>();
+        for (final int m : moves) {
+            if (board[m] != Piece.NONE) {
+                final int distance = Math.abs(m - origin);
+                final int d = normalizeDiagonal(origin, m);
+                blockedDiagonalIDs.add(d);
+                if (blockedFrom.getOrDefault(d, 100) > distance) {
+                    // new nearer piece that blocks the diagonal
+                    blockedFrom.put(d, distance);
+                    if (capturesToRetain.getOrDefault(d, 100) > distance) {
+                        // capture has to be removed, new one will be added
+                        // directly after if the piece if an enemy
+                        capturesToRetain.remove(d);
+                    }
+                    if (Piece.color(board[m]) != myColor) {
+                        capturesToRetain.put(d, m);
+                    }
                 }
             }
-            return false;
-        });
+        }
+
+        for (final int m : moves) {
+            final int normalizesDiagonal = normalizeDiagonal(origin, m);
+            if (!blockedDiagonalIDs.contains(normalizesDiagonal) || blockedFrom.getOrDefault(normalizesDiagonal, -100) > Math.abs(m - origin)) {
+                // diagonal is free, just go ahead!
+                filteredMoves.add(m);
+            }
+        }
+
+        filteredMoves.addAll(capturesToRetain.values());
+
+        return filteredMoves;
+    }
+
+    private int normalizeDiagonal(final int origin, final int dst) {
+        int d = dst - origin;
+        if (d % 7 == 0) {
+            return d > 0 ? 7 : -7;
+        } else if (d % 9 == 0) {
+            return d > 0 ? 9 : -9;
+        }
+        // can never be reached anyways
+        return -1;
+    }
+
+    @Override
+    protected void removeFriendlyFire(final List<Integer> moves, final byte[] board, final int myIndex) {
+        // nothing to do
     }
 }
