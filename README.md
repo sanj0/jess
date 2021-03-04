@@ -2,6 +2,9 @@
 
 ![Jess at startup](img/screenshot1_small.jpg)
 
+**Note: current work on the project is dedicated to move it form a sandbox to an
+actual, playable chess game versus the computer**
+
 Jess is a free, open source chess sandbox, meaning you get a **standard chess
 board without any rules nor mechanics**. Any move can be done at any time, no
 matter the color or legality of the move. This makes it perfect to just **try
