@@ -2,10 +2,7 @@ package de.sanj0.jess.move;
 
 import de.sanj0.jess.Piece;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BishopMoveGenerator extends MoveGenerator {
 
@@ -61,7 +58,7 @@ public class BishopMoveGenerator extends MoveGenerator {
     private List<Integer> filter0(final List<Integer> moves, final byte[] board, final int origin) {
         final List<Integer> filteredMoves = new ArrayList<>(moves.size());
         final byte myColor = Piece.color(board[origin]);
-        final List<Integer> blockedDiagonalIDs = new ArrayList<>(4);
+        final Set<Integer> blockedDiagonalIDs = new HashSet<>();
         // which square are the respective diagonals blocked from?
         final Map<Integer, Integer> blockedFrom = new HashMap<>();
         // enables us to handle captures the same way as friendly fire -
