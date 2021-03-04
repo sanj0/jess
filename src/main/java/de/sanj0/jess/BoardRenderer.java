@@ -9,6 +9,7 @@ import de.edgelord.saltyengine.input.Input;
 import de.edgelord.saltyengine.transform.Dimensions;
 import de.edgelord.saltyengine.transform.Transform;
 import de.edgelord.saltyengine.transform.Vector2f;
+import de.sanj0.jess.move.MoveState;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class BoardRenderer extends DrawingRoutine {
         for (int i = 0; i < 64; i++) {
             g.setColor(isLight ? LIGHT_COLOR : DARK_COLOR);
             g.drawRect(x, y, width, height);
+            g.setColor(isLight ? DARK_COLOR : LIGHT_COLOR);
+            g.drawText(i, x, y, SaltyGraphics.TextAnchor.TOP_LEFT_CORNER);
 
             if ((i + 1) % 8 == 0) {
                 x = origin.getX();
@@ -81,16 +84,15 @@ public class BoardRenderer extends DrawingRoutine {
         for (int i = 0; i < moveState.getSquareMarks().size(); i++) {
             moveState.getSquareMarks().get(i).draw(g.copy());
         }
-
-        /*
+        
         g.setColor(LEGAL_MOVE_COLOR);
-        for (final int legalMove : ChessScene.legalMoves) {
+        for (final int legalMove : moveState.getLegalMoves()) {
             final int file = legalMove / 8;
             final int rank = legalMove - file * 8;
-            g.drawRect(origin.getX() + rank * squareSize.getWidth(),
-                    origin.getY() + file * squareSize.getHeight(),
-                    squareSize.getWidth(), squareSize.getHeight());
-        }*/
+            g.drawRect(origin.getX() + rank * SQUARE_SIZE.getWidth(),
+                    origin.getY() + file * SQUARE_SIZE.getHeight(),
+                    SQUARE_SIZE.getWidth(), SQUARE_SIZE.getHeight());
+        }
 
         final byte[] position = board.getPosition();
         float x = origin.getX();

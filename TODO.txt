@@ -1,0 +1,9 @@
+roadmap for jess, in no particular order; not complete
+
+todo castling
+todo promoting
+todo move generation for all pieces
+todo turns
+todo AI
+    todo move rating
+    [...]

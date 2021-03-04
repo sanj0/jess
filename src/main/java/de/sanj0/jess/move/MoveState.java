@@ -1,4 +1,7 @@
-package de.sanj0.jess;
+package de.sanj0.jess.move;
+
+import de.sanj0.jess.Arrow;
+import de.sanj0.jess.SquareMark;
 
 import java.util.ArrayList;
 import java.util.List;

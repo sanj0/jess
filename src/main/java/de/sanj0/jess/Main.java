@@ -2,6 +2,7 @@ package de.sanj0.jess;
 
 import de.edgelord.saltyengine.core.Game;
 import de.edgelord.saltyengine.core.GameConfig;
+import de.sanj0.jess.move.KnightMoveGenerator;
 
 public class Main extends Game {
 

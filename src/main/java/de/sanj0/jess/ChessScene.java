@@ -5,9 +5,13 @@ import de.edgelord.saltyengine.input.KeyboardInputAdapter;
 import de.edgelord.saltyengine.input.MouseInputAdapter;
 import de.edgelord.saltyengine.scene.Scene;
 import de.edgelord.saltyengine.transform.Vector2f;
+import de.sanj0.jess.move.Move;
+import de.sanj0.jess.move.MoveState;
+import de.sanj0.jess.move.Moves;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class ChessScene extends Scene {
 
@@ -42,6 +46,7 @@ public class ChessScene extends Scene {
                     final int draggedPieceIndex = BoardRenderer.indexOfPosition(e.getX(), e.getY());
                     moveState.setDraggedPieceIndex(draggedPieceIndex);
                     moveState.setDraggedPiece(board.getPosition()[draggedPieceIndex]);
+                    moveState.setLegalMoves(Moves.pseudoLegalMoves(board.getPosition(), moveState.getDraggedPieceIndex()));
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
                     arrowStart = BoardRenderer.centreOfHoveredSquare(e.getX(), e.getY());
                 }
@@ -54,14 +59,17 @@ public class ChessScene extends Scene {
                     // check if square is legal and make the move or
                     // move back to origin
                     final int position = BoardRenderer.indexOfPosition(e.getX(), e.getY());
-                    if (position != moveState.getDraggedPieceIndex()) {
-                        final Move move = Moves.move(board.getPosition(), moveState.getDraggedPieceIndex(), BoardRenderer.indexOfPosition(e.getX(), e.getY()));
-                        move.doMove(board.getPosition());
-                        moveState.pushMove(move);
-                        moveState.getRedoStack().clear();
+                    if (moveState.getLegalMoves().contains(position)) {
+                        if (position != moveState.getDraggedPieceIndex()) {
+                            final Move move = Moves.move(board.getPosition(), moveState.getDraggedPieceIndex(), BoardRenderer.indexOfPosition(e.getX(), e.getY()));
+                            move.doMove(board.getPosition());
+                            moveState.pushMove(move);
+                            moveState.getRedoStack().clear();
+                        }
                     }
                     moveState.setDraggedPieceIndex(-1);
                     moveState.setDraggedPiece(Piece.NONE);
+                    moveState.setLegalMoves(new ArrayList<>());
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
                     if (arrowStart != null) {
                         final Vector2f arrowEnd = BoardRenderer.centreOfHoveredSquare(e.getX(), e.getY());

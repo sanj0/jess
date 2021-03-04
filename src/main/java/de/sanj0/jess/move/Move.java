@@ -1,4 +1,4 @@
-package de.sanj0.jess;
+package de.sanj0.jess.move;
 
 /**
  * A move has to indices it affects, the start square and the end square. Both
