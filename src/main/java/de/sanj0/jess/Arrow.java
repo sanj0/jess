@@ -5,7 +5,6 @@ import de.edgelord.saltyengine.transform.Vector2f;
 import de.edgelord.saltyengine.utils.ColorUtil;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.Objects;
 
 /**
@@ -23,19 +22,11 @@ public class Arrow extends Mark {
     private final Vector2f end;
     private final Vector2f lineEnd;
 
-    private final AffineTransform transform;
-
     public Arrow(final Vector2f start, final Vector2f end) {
         this.start = start;
         this.end = end;
         final Vector2f lineVector = end.subtracted(start);
         lineEnd = lineVector.withMagnitude((float) lineVector.magnitude() - HEAD_SIZE).add(start);
-
-        transform = new AffineTransform();
-        transform.setToIdentity();
-        double angle = Math.atan2(end.getY() - start.getY(), end.getX() - start.getX());
-        transform.translate(end.getX(), end.getY());
-        transform.rotate((angle - HALF_PI));
     }
 
 
@@ -50,6 +41,7 @@ public class Arrow extends Mark {
     /**
      * By RubenLaguna on stackoverflow - https://stackoverflow.com/questions/2027613/how-to-draw-a-directed-arrow-line-in-java
      * because my approach didn't work, even though it was so similar ;(
+     * TODO(sanj0): remake and clean up
      * <p>
      * Draw an arrow line between two points.
      *
