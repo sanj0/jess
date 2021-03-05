@@ -13,7 +13,7 @@ public class Moves {
     private static MoveGenerator KNIGHT_MOVES = new KnightMoveGenerator();
     private static MoveGenerator BISHOP_MOVES = new BishopMoveGenerator();
     private static MoveGenerator ROOK_MOVES = new RookMoveGenerator();
-    private static MoveGenerator QUEEN_MOVES = new KnightMoveGenerator();
+    private static MoveGenerator QUEEN_MOVES = new QueenMoveGenerator();
     private static MoveGenerator KING_MOVES = new KnightMoveGenerator();
 
     private static Map<Byte, MoveGenerator> MOVE_GENERATORS = new HashMap<Byte, MoveGenerator>() {{
