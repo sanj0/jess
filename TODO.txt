@@ -3,6 +3,12 @@ roadmap for jess, in no particular order; not complete
 todo castling
 todo promoting
 todo move generation for all pieces
+    done pawns
+    done knights
+    done bishops
+    done rooks
+    todo queens -> just combine a RookGenerator and a BishopGenerator
+    todo kings
 todo turns
 todo AI
     todo move rating

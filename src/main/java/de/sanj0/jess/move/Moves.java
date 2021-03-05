@@ -12,7 +12,7 @@ public class Moves {
     private static MoveGenerator PAWN_MOVES = new PawnMoveGenerator();
     private static MoveGenerator KNIGHT_MOVES = new KnightMoveGenerator();
     private static MoveGenerator BISHOP_MOVES = new BishopMoveGenerator();
-    private static MoveGenerator ROOK_MOVES = new KnightMoveGenerator();
+    private static MoveGenerator ROOK_MOVES = new RookMoveGenerator();
     private static MoveGenerator QUEEN_MOVES = new KnightMoveGenerator();
     private static MoveGenerator KING_MOVES = new KnightMoveGenerator();
 
