@@ -39,6 +39,21 @@ public class Move {
         }
     }
 
+    public byte[] boardAfterMove(final byte[] position) {
+        final byte[] board = new byte[position.length];
+        for (int i = 0; i < position.length; i++) {
+            if (i == indices[0]) {
+                board[i] = afterState[0];
+            } else if (i == indices[1]) {
+                board[i] = afterState[1];
+            } else {
+                board[i] = position[i];
+            }
+        }
+
+        return board;
+    }
+
     /**
      * Does the move described by this
      * instance.

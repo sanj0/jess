@@ -14,7 +14,7 @@ public class Moves {
     private static MoveGenerator BISHOP_MOVES = new BishopMoveGenerator();
     private static MoveGenerator ROOK_MOVES = new RookMoveGenerator();
     private static MoveGenerator QUEEN_MOVES = new QueenMoveGenerator();
-    private static MoveGenerator KING_MOVES = new KnightMoveGenerator();
+    private static MoveGenerator KING_MOVES = new KingMoveGenerator();
 
     private static Map<Byte, MoveGenerator> MOVE_GENERATORS = new HashMap<Byte, MoveGenerator>() {{
         put(Piece.PAWN, PAWN_MOVES);
@@ -32,6 +32,18 @@ public class Moves {
         return new Move(indices, before, after);
     }
 
+    public static List<Integer> allPseudoLegalMoves(final byte[] board, final byte color) {
+        final List<Integer> moves = new ArrayList<>();
+        for (int i = 0; i < board.length; i++) {
+            byte b = board[i];
+            if (b != Piece.NONE && Piece.color(b) == color) {
+                moves.addAll(pseudoLegalMoves(board, i));
+            }
+        }
+
+        return moves;
+    }
+
     // pseudo legal moves for the piece at the given index
     public static List<Integer> pseudoLegalMoves(final byte[] board, final int position) {
         final byte piece = board[position];
@@ -42,6 +54,39 @@ public class Moves {
         generator.removeFriendlyFire(pseudoLegal, board, position);
 
         return pseudoLegal;
+    }
+
+    public static List<Integer> legalMoves(final byte[] board, final int position) {
+        final List<Integer> legalMoves = new ArrayList<>();
+        final List<Integer> pseudolegalMoves = pseudoLegalMoves(board, position);
+        final byte myColor = Piece.color(board[position]);
+        final byte enemyColor = Piece.oppositeColor(myColor);
+        final int myKing = kingPosition(board, myColor);
+
+        outerloop:
+        for (final int m : pseudolegalMoves) {
+            final List<Integer> allResponses = allPseudoLegalMoves(move(board, position, m).boardAfterMove(board), enemyColor);
+            for (final int r : allResponses) {
+                if (r == (myKing == position ? m : myKing)) {
+                    continue outerloop;
+                }
+            }
+            legalMoves.add(m);
+        }
+
+        return legalMoves;
+    }
+
+    // optimization by different search start depending on color?
+    private static int kingPosition(final byte[] board, final byte color) {
+        final byte k = Piece.get(Piece.KING, color);
+        for (int i = 0; i < board.length; i++) {
+            if (board[i] == k) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     private static List<Integer> kingMoves(final int position) {

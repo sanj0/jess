@@ -46,7 +46,7 @@ public class ChessScene extends Scene {
                     final int draggedPieceIndex = BoardRenderer.indexOfPosition(e.getX(), e.getY());
                     moveState.setDraggedPieceIndex(draggedPieceIndex);
                     moveState.setDraggedPiece(board.getPosition()[draggedPieceIndex]);
-                    moveState.setLegalMoves(Moves.pseudoLegalMoves(board.getPosition(), moveState.getDraggedPieceIndex()));
+                    moveState.setLegalMoves(Moves.legalMoves(board.getPosition(), moveState.getDraggedPieceIndex()));
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
                     arrowStart = BoardRenderer.centreOfHoveredSquare(e.getX(), e.getY());
                 }

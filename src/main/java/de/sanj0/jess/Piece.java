@@ -67,4 +67,8 @@ public class Piece {
     public static boolean isKing(final byte piece) {
         return type(piece) == KING;
     }
+
+    public static byte oppositeColor(final byte myColor) {
+        return myColor == DARK ? LIGHT : DARK;
+    }
 }
