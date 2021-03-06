@@ -56,10 +56,14 @@ public class Moves {
         return pseudoLegal;
     }
 
-    public static List<Integer> legalMoves(final byte[] board, final int position) {
+    public static List<Integer> legalMoves(final byte[] board, final int position, final MoveState moveState) {
+        final byte myColor = Piece.color(board[position]);
+
+        if (moveState.getColorToMove() != myColor)
+            return new ArrayList<>();
+
         final List<Integer> legalMoves = new ArrayList<>();
         final List<Integer> pseudolegalMoves = pseudoLegalMoves(board, position);
-        final byte myColor = Piece.color(board[position]);
         final byte enemyColor = Piece.oppositeColor(myColor);
         final int myKing = kingPosition(board, myColor);
 

@@ -1,6 +1,7 @@
 package de.sanj0.jess.move;
 
 import de.sanj0.jess.Arrow;
+import de.sanj0.jess.Piece;
 import de.sanj0.jess.SquareMark;
 
 import java.util.ArrayList;
@@ -8,13 +9,15 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * The state of the user-made move.
+ * The state of move(s)
  */
 public class MoveState {
     private int hoveredSquare;
     private int draggedPieceIndex;
     private List<Integer> legalMoves;
     private byte draggedPiece;
+
+    private byte colorToMove = Piece.LIGHT;
 
     private final Stack<Move> moveStack = new Stack<>();
     private final Stack<Move> redoStack = new Stack<>();
@@ -28,6 +31,10 @@ public class MoveState {
         this.draggedPieceIndex = draggedPieceIndex;
         this.legalMoves = legalMoves;
         this.draggedPiece = draggedPiece;
+    }
+
+    public void nextTurn() {
+        colorToMove = Piece.oppositeColor(colorToMove);
     }
 
     public void pushMove(final Move move) {
@@ -177,5 +184,14 @@ public class MoveState {
      */
     public void setDraggedPiece(final byte draggedPiece) {
         this.draggedPiece = draggedPiece;
+    }
+
+    /**
+     * Gets {@link #colorToMove}.
+     *
+     * @return the value of {@link #colorToMove}
+     */
+    public byte getColorToMove() {
+        return colorToMove;
     }
 }
