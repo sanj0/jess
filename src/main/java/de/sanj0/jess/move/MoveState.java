@@ -1,8 +1,8 @@
 package de.sanj0.jess.move;
 
-import de.sanj0.jess.Arrow;
+import de.sanj0.jess.marks.Arrow;
 import de.sanj0.jess.Piece;
-import de.sanj0.jess.SquareMark;
+import de.sanj0.jess.marks.SquareMark;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,13 @@ public class MoveState {
         this.draggedPieceIndex = draggedPieceIndex;
         this.legalMoves = legalMoves;
         this.draggedPiece = draggedPiece;
+    }
+
+    public MoveState colorToMove(final byte colorToMove) {
+        final MoveState moveState = new MoveState(hoveredSquare, draggedPieceIndex, legalMoves, draggedPiece);
+        moveState.colorToMove = colorToMove;
+
+        return moveState;
     }
 
     public void nextTurn() {
@@ -193,5 +200,14 @@ public class MoveState {
      */
     public byte getColorToMove() {
         return colorToMove;
+    }
+
+    /**
+     * Sets {@link #colorToMove}.
+     *
+     * @param colorToMove the new value of {@link #colorToMove}
+     */
+    public void setColorToMove(final byte colorToMove) {
+        this.colorToMove = colorToMove;
     }
 }

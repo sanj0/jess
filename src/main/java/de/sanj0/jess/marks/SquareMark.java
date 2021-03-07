@@ -1,8 +1,9 @@
-package de.sanj0.jess;
+package de.sanj0.jess.marks;
 
 import de.edgelord.saltyengine.core.graphics.SaltyGraphics;
 import de.edgelord.saltyengine.transform.Vector2f;
 import de.edgelord.saltyengine.utils.ColorUtil;
+import de.sanj0.jess.BoardRenderer;
 
 import java.awt.*;
 import java.util.Objects;

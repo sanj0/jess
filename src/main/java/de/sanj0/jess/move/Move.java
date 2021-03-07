@@ -1,5 +1,8 @@
 package de.sanj0.jess.move;
 
+import de.sanj0.jess.Board;
+import de.sanj0.jess.Piece;
+
 /**
  * A move has to indices it affects, the start square and the end square. Both
  * have a before and an after state.
@@ -37,6 +40,40 @@ public class Move {
         if (indices.length != 2 || beforeState.length != 2 || afterState.length != 2) {
             throw new IllegalArgumentException("all arrays passed to Move.<init> must be of length 2");
         }
+    }
+
+    public int rating(final byte[] board) {
+        final byte capturedPiece = beforeState[1];
+        if (capturedPiece == Piece.NONE) {
+            return ratingByPosition(board);
+        } else {
+            return Piece.value(capturedPiece) * 5 + ratingByPosition(board);
+        }
+    }
+
+    private int ratingByPosition(final byte[] board) {
+        // if the piece is developed for the first time
+        // it's a plus
+        final byte me = beforeState[0];
+        final int myPosition = indices[0];
+        if (Piece.startingIndex(me).contains(myPosition)) {
+            if (Piece.type(me) == Piece.QUEEN) {
+                return 1 + (3 - Board.distanceFromCentre(myPosition));
+            } else if (Piece.type(me) == Piece.PAWN) {
+                // better to develop centre pawns
+                return myPosition == 11 || myPosition == 12
+                        || myPosition == 51 || myPosition == 52 ? 3 : 2;
+            } else if (Piece.type(me) == Piece.KING) {
+                // don't develop the king
+                // - especially not to the centre of the board
+                return -4 + Board.distanceFromCentre(myPosition);
+            } else if (Piece.type(me) == Piece.ROOK){
+                return 2;
+            } else {
+                return 3 + (3 - Board.distanceFromCentre(myPosition));
+            }
+        }
+        return 0;
     }
 
     public byte[] boardAfterMove(final byte[] position) {
@@ -101,5 +138,10 @@ public class Move {
      */
     public byte[] getAfterState() {
         return afterState;
+    }
+
+    //TODO(sanj0) actualy notation
+    public String notation() {
+        return indices[0] + "-" + indices[1];
     }
 }

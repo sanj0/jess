@@ -1,4 +1,4 @@
-package de.sanj0.jess;
+package de.sanj0.jess.marks;
 
 import de.edgelord.saltyengine.core.interfaces.Drawable;
 

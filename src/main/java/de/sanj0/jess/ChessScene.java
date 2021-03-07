@@ -5,6 +5,8 @@ import de.edgelord.saltyengine.input.KeyboardInputAdapter;
 import de.edgelord.saltyengine.input.MouseInputAdapter;
 import de.edgelord.saltyengine.scene.Scene;
 import de.edgelord.saltyengine.transform.Vector2f;
+import de.sanj0.jess.marks.Arrow;
+import de.sanj0.jess.marks.SquareMark;
 import de.sanj0.jess.move.Move;
 import de.sanj0.jess.move.MoveState;
 import de.sanj0.jess.move.Moves;
@@ -65,6 +67,8 @@ public class ChessScene extends Scene {
                             move.doMove(board.getPosition());
                             moveState.nextTurn();
                             moveState.pushMove(move);
+                            final Move response = ChessAI.move(board.getPosition(), moveState);
+                            moveState.pushMove(response);
                             moveState.getRedoStack().clear();
                         }
                     }
@@ -109,9 +113,11 @@ public class ChessScene extends Scene {
                     if (buttonDown == KeyEvent.VK_LEFT) {
                         //undo move
                         boardRenderer.getMoveState().undoMove(board.getPosition());
+                        boardRenderer.getMoveState().nextTurn();
                     } else if (buttonDown == KeyEvent.VK_RIGHT) {
                         //redo move
                         boardRenderer.getMoveState().redoMove(board.getPosition());
+                        boardRenderer.getMoveState().nextTurn();
                     }
                     buttonDown = -1;
                 }
@@ -123,6 +129,7 @@ public class ChessScene extends Scene {
                     // reset position
                     board.setPosition(BoardPositions.parseFEN(Main.STARTING_FEN));
                     boardRenderer.getMoveState().clearMoveStacks();
+                    boardRenderer.getMoveState().setColorToMove(Piece.LIGHT);
                 }
             }
         });

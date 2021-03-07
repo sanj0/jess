@@ -44,6 +44,21 @@ public class Moves {
         return moves;
     }
 
+    public static List<Move> allLegalMoves(final byte[] board, final MoveState moveState) {
+        final List<Move> moves = new ArrayList<>();
+        for (int i = 0; i < board.length; i++) {
+            byte b = board[i];
+            if (b != Piece.NONE && Piece.color(b) == moveState.getColorToMove()) {
+                final List<Integer> mList = legalMoves(board, i, moveState);
+                for (final int m : mList) {
+                    moves.add(move(board, i, m));
+                }
+            }
+        }
+
+        return moves;
+    }
+
     // pseudo legal moves for the piece at the given index
     public static List<Integer> pseudoLegalMoves(final byte[] board, final int position) {
         final byte piece = board[position];
