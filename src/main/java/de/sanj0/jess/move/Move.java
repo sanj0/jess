@@ -36,18 +36,15 @@ public class Move {
         this.indices = indices;
         this.beforeState = beforeState;
         this.afterState = afterState;
-
-        if (indices.length != 2 || beforeState.length != 2 || afterState.length != 2) {
-            throw new IllegalArgumentException("all arrays passed to Move.<init> must be of length 2");
-        }
     }
 
     public int rating(final byte[] board) {
         final byte capturedPiece = beforeState[1];
+        final int promotionRating = promotion() != Piece.NONE ? 8 : 0;
         if (capturedPiece == Piece.NONE) {
-            return ratingByPosition(board);
+            return ratingByPosition(board) + promotionRating;
         } else {
-            return Piece.value(capturedPiece) * 5 + ratingByPosition(board);
+            return Piece.value(capturedPiece) * 5 + ratingByPosition(board) + promotionRating;
         }
     }
 
@@ -56,39 +53,76 @@ public class Move {
         // it's a plus
         final byte me = beforeState[0];
         final int myPosition = indices[0];
+        final int dstPos = indices[1];
         if (Piece.startingIndex(me).contains(myPosition)) {
             if (Piece.type(me) == Piece.QUEEN) {
-                return 1 + (3 - Board.distanceFromCentre(myPosition));
+                return Math.min(2, 4 - Board.distanceFromCentre(dstPos)) - 1;
             } else if (Piece.type(me) == Piece.PAWN) {
                 // better to develop centre pawns
-                return myPosition == 11 || myPosition == 12
-                        || myPosition == 51 || myPosition == 52 ? 3 : 2;
+                return ratePawnAdvance(board);
             } else if (Piece.type(me) == Piece.KING) {
                 // don't develop the king
                 // - especially not to the centre of the board
-                return -4 + Board.distanceFromCentre(myPosition);
+                return -4 + Board.distanceFromCentre(dstPos);
             } else if (Piece.type(me) == Piece.ROOK){
-                return 2;
+                return 1;
             } else {
-                return 3 + (3 - Board.distanceFromCentre(myPosition));
+                return Math.min(2, 4 - Board.distanceFromCentre(dstPos));
             }
         }
         return 0;
     }
 
+    private int ratePawnAdvance(final byte[] board) {
+        final int myPosition = indices[0];
+        int centreModyfier = myPosition == 11 || myPosition == 12
+                || myPosition == 51 || myPosition == 52 ? 1 : 0;
+        int endgameModyfier = Board.endgame(board) > .5 ? 1 : 0;
+
+        return centreModyfier + endgameModyfier;
+    }
+
     public byte[] boardAfterMove(final byte[] position) {
         final byte[] board = new byte[position.length];
-        for (int i = 0; i < position.length; i++) {
-            if (i == indices[0]) {
-                board[i] = afterState[0];
-            } else if (i == indices[1]) {
-                board[i] = afterState[1];
-            } else {
-                board[i] = position[i];
+        final byte promotion = promotion();
+        if (promotion != Piece.NONE) {
+            for (int i = 0; i < position.length; i++) {
+                if (i == indices[0]) {
+                    board[i] = afterState[0];
+                } else if (i == indices[1]) {
+                    board[i] = promotion;
+                } else {
+                    board[i] = position[i];
+                }
+            }
+        } else {
+            for (int i = 0; i < position.length; i++) {
+                if (i == indices[0]) {
+                    board[i] = afterState[0];
+                } else if (i == indices[1]) {
+                    board[i] = afterState[1];
+                } else {
+                    board[i] = position[i];
+                }
             }
         }
 
         return board;
+    }
+
+    // return Piece.NONE if not and the respective Queen if it is
+    public byte promotion() {
+        final byte myColor = Piece.color(beforeState[0]);
+        if (Piece.isPawn(beforeState[0])) {
+            final int rank = Piece.rank(indices[1]);
+            if (myColor == Piece.LIGHT && rank == 0) {
+                return Piece.get(Piece.QUEEN, Piece.LIGHT);
+            } else if (myColor == Piece.DARK && rank == 7) {
+                return Piece.get(Piece.QUEEN, Piece.DARK);
+            }
+        }
+
+        return Piece.NONE;
     }
 
     /**
@@ -98,8 +132,13 @@ public class Move {
      * @param board the board
      */
     public void doMove(final byte[] board) {
+        final byte promotion = promotion();
         board[indices[0]] = afterState[0];
-        board[indices[1]] = afterState[1];
+        if (promotion == Piece.NONE) {
+            board[indices[1]] = afterState[1];
+        } else {
+            board[indices[1]] = promotion;
+        }
     }
 
     /**

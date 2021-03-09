@@ -2,7 +2,6 @@ package de.sanj0.jess;
 
 import de.edgelord.saltyengine.core.Game;
 import de.edgelord.saltyengine.core.GameConfig;
-import de.sanj0.jess.move.KnightMoveGenerator;
 
 public class Main extends Game {
 
@@ -23,5 +22,6 @@ public class Main extends Game {
         PieceRenderer.init();
         start(30, new ChessScene(new Board(BoardPositions.parseFEN(STARTING_FEN))));
         Game.setDrawFPS(false);
+        Game.getHostAsDisplayManager().getDisplay().setResizable(false);
     }
 }

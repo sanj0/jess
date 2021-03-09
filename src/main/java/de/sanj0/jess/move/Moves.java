@@ -32,7 +32,7 @@ public class Moves {
         return new Move(indices, before, after);
     }
 
-    public static List<Integer> allPseudoLegalMoves(final byte[] board, final byte color) {
+    private static List<Integer> allPseudoLegalMoves(final byte[] board, final byte color) {
         final List<Integer> moves = new ArrayList<>();
         for (int i = 0; i < board.length; i++) {
             byte b = board[i];
@@ -60,7 +60,8 @@ public class Moves {
     }
 
     // pseudo legal moves for the piece at the given index
-    public static List<Integer> pseudoLegalMoves(final byte[] board, final int position) {
+    // doesnt contain castles
+    private static List<Integer> pseudoLegalMoves(final byte[] board, final int position) {
         final byte piece = board[position];
         if (piece == Piece.NONE) return new ArrayList<>();
         final byte type = Piece.type(piece);

@@ -38,6 +38,14 @@ public class Piece {
         put(Piece.get(KING, DARK), Arrays.asList(4));
     }};
 
+    public static int rank(final int index) {
+        return index / 8;
+    }
+
+    public static int file(final int index) {
+        return index - rank(index) * 8;
+    }
+
     /**
      * Casts the given int to a byte and return it
      *

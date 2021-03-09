@@ -130,6 +130,12 @@ public class ChessScene extends Scene {
                     board.setPosition(BoardPositions.parseFEN(Main.STARTING_FEN));
                     boardRenderer.getMoveState().clearMoveStacks();
                     boardRenderer.getMoveState().setColorToMove(Piece.LIGHT);
+                } else if (e.getKeyChar() == 'm') {
+                    // make the AI make the next move
+                    final MoveState moveState = boardRenderer.getMoveState();
+                    final Move response = ChessAI.move(board.getPosition(), moveState);
+                    moveState.pushMove(response);
+                    moveState.getRedoStack().clear();
                 }
             }
         });

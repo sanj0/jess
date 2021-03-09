@@ -19,6 +19,8 @@ public class MoveState {
 
     private byte colorToMove = Piece.LIGHT;
 
+    private List<CastleMove.CastleType> allowedCastles = new ArrayList<>();
+
     private final Stack<Move> moveStack = new Stack<>();
     private final Stack<Move> redoStack = new Stack<>();
 
@@ -209,5 +211,23 @@ public class MoveState {
      */
     public void setColorToMove(final byte colorToMove) {
         this.colorToMove = colorToMove;
+    }
+
+    /**
+     * Gets {@link #allowedCastles}.
+     *
+     * @return the value of {@link #allowedCastles}
+     */
+    public List<CastleMove.CastleType> getAllowedCastles() {
+        return allowedCastles;
+    }
+
+    /**
+     * Sets {@link #allowedCastles}.
+     *
+     * @param allowedCastles the new value of {@link #allowedCastles}
+     */
+    public void setAllowedCastles(final List<CastleMove.CastleType> allowedCastles) {
+        this.allowedCastles = allowedCastles;
     }
 }

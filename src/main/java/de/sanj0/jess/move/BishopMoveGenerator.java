@@ -4,6 +4,7 @@ import de.sanj0.jess.Piece;
 
 import java.util.*;
 
+// FIXME: bishop can go from 63-0 ignoring any blocks
 public class BishopMoveGenerator extends MoveGenerator {
 
     private static final int[][] BISHOP_MOVES_UPPER_HALF = {

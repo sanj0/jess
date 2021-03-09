@@ -19,12 +19,25 @@ public class Board {
             3, 3, 3, 3, 3, 3, 3, 3
     };
 
+    private static final int MAX_NUM_PIECES = 32;
+
     public Board(final byte[] position) {
         this.position = position;
 
         if (position.length != 64) {
             throw new IllegalArgumentException("board data must contain 64 positions!");
         }
+    }
+
+    public static double endgame(final byte[] board) {
+        int numPieces = 0;
+        for (int i = 0; i < board.length; i++) {
+            if (board[i] != Piece.NONE) {
+                numPieces++;
+            }
+        }
+
+        return numPieces == 0 ? 1 : 1 - (double) numPieces / MAX_NUM_PIECES;
     }
 
     // range: 0 - 3
