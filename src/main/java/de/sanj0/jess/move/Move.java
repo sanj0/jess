@@ -63,11 +63,11 @@ public class Move {
             } else if (Piece.type(me) == Piece.KING) {
                 // don't develop the king
                 // - especially not to the centre of the board
-                return -4 + Board.distanceFromCentre(dstPos);
+                return -2 + Board.distanceFromCentre(dstPos);
             } else if (Piece.type(me) == Piece.ROOK){
-                return 1;
+                return Board.endgame(board) > .2 ? 0 : -1;
             } else {
-                return Math.min(2, 4 - Board.distanceFromCentre(dstPos));
+                return Math.max(2, 4 - Board.distanceFromCentre(dstPos));
             }
         }
         return 0;
@@ -75,11 +75,14 @@ public class Move {
 
     private int ratePawnAdvance(final byte[] board) {
         final int myPosition = indices[0];
-        int centreModyfier = myPosition == 11 || myPosition == 12
-                || myPosition == 51 || myPosition == 52 ? 1 : 0;
-        int endgameModyfier = Board.endgame(board) > .5 ? 1 : 0;
+        final boolean isCentrePawn = myPosition == 11 || myPosition == 12
+                || myPosition == 51 || myPosition == 52;
+        int centreModifier = isCentrePawn ? 2 : 1;
+        int doubleAdvanceCentreModifier = isCentrePawn && Math.abs(indices[0] - indices[1]) == 16
+                ? 2 : 0;
+        int endgameModifier = Board.endgame(board) > .5 ? 0 : -1;
 
-        return centreModyfier + endgameModyfier;
+        return centreModifier + endgameModifier + doubleAdvanceCentreModifier;
     }
 
     public byte[] boardAfterMove(final byte[] position) {

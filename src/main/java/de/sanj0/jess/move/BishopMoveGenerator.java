@@ -4,7 +4,7 @@ import de.sanj0.jess.Piece;
 
 import java.util.*;
 
-// FIXME: bishop can go from 63-0 ignoring any blocks
+// FIXME: bishop can go from 63-0 and v.v. ignoring any blocks
 public class BishopMoveGenerator extends MoveGenerator {
 
     private static final int[][] BISHOP_MOVES_UPPER_HALF = {
@@ -54,7 +54,7 @@ public class BishopMoveGenerator extends MoveGenerator {
     }
 
     // filters out friendly fire and
-    // sorts out captures, i.e. doesnt allow
+    // sorts out captures, i.e. don't allow
     // to move past captures
     private List<Integer> filter0(final List<Integer> moves, final byte[] board, final int origin) {
         final List<Integer> filteredMoves = new ArrayList<>(moves.size());
@@ -101,10 +101,10 @@ public class BishopMoveGenerator extends MoveGenerator {
 
     private int normalizeDiagonal(final int origin, final int dst) {
         int d = dst - origin;
-        if (d % 7 == 0) {
-            return d > 0 ? 7 : -7;
-        } else if (d % 9 == 0) {
+        if (d % 9 == 0) {
             return d > 0 ? 9 : -9;
+        } else if (d % 7 == 0) {
+            return d > 0 ? 7 : -7;
         }
         // can never be reached anyways
         return -1;

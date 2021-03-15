@@ -20,6 +20,8 @@ public class ChessScene extends Scene {
     private final Board board;
     private final BoardRenderer boardRenderer;
 
+    private boolean autoMove = false;
+
     public ChessScene(final Board board) {
         this.board = board;
         boardRenderer = new BoardRenderer(board);
@@ -67,8 +69,10 @@ public class ChessScene extends Scene {
                             move.doMove(board.getPosition());
                             moveState.nextTurn();
                             moveState.pushMove(move);
-                            final Move response = ChessAI.move(board.getPosition(), moveState);
-                            moveState.pushMove(response);
+                            if (autoMove) {
+                                final Move response = ChessAI.move(board.getPosition(), moveState);
+                                moveState.pushMove(response);
+                            }
                             moveState.getRedoStack().clear();
                         }
                     }
@@ -112,12 +116,16 @@ public class ChessScene extends Scene {
                 if (buttonDown == e.getKeyCode()) {
                     if (buttonDown == KeyEvent.VK_LEFT) {
                         //undo move
-                        boardRenderer.getMoveState().undoMove(board.getPosition());
-                        boardRenderer.getMoveState().nextTurn();
+                        final boolean undone = boardRenderer.getMoveState().undoMove(board.getPosition());
+                        if (undone) {
+                            boardRenderer.getMoveState().nextTurn();
+                        }
                     } else if (buttonDown == KeyEvent.VK_RIGHT) {
                         //redo move
-                        boardRenderer.getMoveState().redoMove(board.getPosition());
-                        boardRenderer.getMoveState().nextTurn();
+                        final boolean redone = boardRenderer.getMoveState().redoMove(board.getPosition());
+                        if (redone) {
+                            boardRenderer.getMoveState().nextTurn();
+                        }
                     }
                     buttonDown = -1;
                 }
@@ -136,6 +144,10 @@ public class ChessScene extends Scene {
                     final Move response = ChessAI.move(board.getPosition(), moveState);
                     moveState.pushMove(response);
                     moveState.getRedoStack().clear();
+                } else if (e.getKeyChar() == 'a') {
+                    autoMove = !autoMove;
+                    System.out.println("auto move " + (autoMove ? "on" : "off") + " - Chessica " + (autoMove ? "will" : "will not") +
+                            " automatically move the enemy pieces.");
                 }
             }
         });

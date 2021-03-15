@@ -50,20 +50,26 @@ public class MoveState {
         moveStack.push(move);
     }
 
-    public void undoMove(final byte[] board) {
+    // return true if a move was undone
+    public boolean undoMove(final byte[] board) {
         if (!moveStack.isEmpty()) {
             final Move move = moveStack.pop();
             move.undoMove(board);
             redoStack.push(move);
+            return true;
         }
+        return false;
     }
 
-    public void redoMove(final byte[] board) {
+    // returns true of a move was redone
+    public boolean redoMove(final byte[] board) {
         if (!redoStack.isEmpty()) {
             final Move move = redoStack.pop();
             move.doMove(board);
             moveStack.push(move);
+            return true;
         }
+        return false;
     }
 
     public void clearMoveStacks() {

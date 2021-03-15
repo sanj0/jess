@@ -68,7 +68,7 @@ public class Piece {
         } else if (type == QUEEN) {
             return 8;
         } else if (type == KING) {
-            return Integer.MAX_VALUE;
+            return 0;
         } else {
             throw new IllegalArgumentException(piece + " is not a valid piece.");
         }

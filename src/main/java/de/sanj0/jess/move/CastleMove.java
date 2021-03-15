@@ -4,6 +4,11 @@ import de.sanj0.jess.Piece;
 
 public class CastleMove extends Move {
 
+    public static final int LIGHT_KING_SIDE_CASTLE = -1;
+    public static final int LIGHT_QUEEN_SIDE_CASTLE = -2;
+    public static final int DARK_KING_SIDE_CASTLE = -3;
+    public static final int DARK_QUEEN_SIDE_CASTLE = -4;
+
     private final CastleType type;
     private final byte king;
     private final byte rook;

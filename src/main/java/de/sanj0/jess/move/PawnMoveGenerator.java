@@ -11,7 +11,9 @@ public class PawnMoveGenerator extends MoveGenerator {
     public List<Integer> pseudoLegalMoves(final byte[] board, final int position) {
         final List<Integer> moves = new ArrayList<>(3);
         final byte color = Piece.color(board[position]);
+        boolean isSingleAdvancePossible = false;
         if (color == Piece.DARK) {
+            isSingleAdvancePossible = board[position + 8] == Piece.NONE;
             // normal +1 extend if the square is empty and in bounds
             addIfEmptyAndInBounds(moves, board, position + 8);
             // capture left if not on a rank, opposite color piece and in bounds
@@ -23,10 +25,11 @@ public class PawnMoveGenerator extends MoveGenerator {
                 addIfColorAndInBounds(moves, board, position + 9, Piece.LIGHT);
             }
             // long advance from starting position
-            if (position >= 8 && position <= 15) {
+            if (position >= 8 && position <= 15 && isSingleAdvancePossible) {
                 addIfEmptyAndInBounds(moves, board, position + 16);
             }
         } else if (color == Piece.LIGHT) {
+            isSingleAdvancePossible = board[position - 8] == Piece.NONE;
             // normal +1 extend if the square is empty and in bounds
             addIfEmptyAndInBounds(moves, board, position - 8);
             // capture left if not on a rank, opposite color piece and in bounds
@@ -38,7 +41,7 @@ public class PawnMoveGenerator extends MoveGenerator {
                 addIfColorAndInBounds(moves, board, position - 7, Piece.DARK);
             }
             // long advance from starting position
-            if (position >= 48 && position <= 55) {
+            if (position >= 48 && position <= 55 && isSingleAdvancePossible) {
                 addIfEmptyAndInBounds(moves, board, position - 16);
             }
         }
