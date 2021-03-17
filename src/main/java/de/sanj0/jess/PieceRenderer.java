@@ -7,6 +7,7 @@ import de.edgelord.saltyengine.transform.Transform;
 import de.edgelord.saltyengine.utils.ImageLoader;
 import de.edgelord.saltyengine.utils.ImageUtils;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,12 +110,12 @@ public class PieceRenderer {
      *
      * @return the sprite at the given coordinates in the given SpriteSheet
      * sclaled to the given width and height
-     * @see ImageUtils#resize(SaltyImage, float, float)
+     * @see ImageUtils#resize(SaltyImage, float, float, Object)
      * @see Spritesheet#getFrame(int, int)
      */
     private static SaltyImage getPieceImage(final Spritesheet spritesheet,
                                             final int x, final int y,
                                             final float width, final float height) {
-        return ImageUtils.resize(spritesheet.getFrame(x, y).getImage(), width, height);
+        return ImageUtils.resize(spritesheet.getFrame(x, y).getImage(), width, height, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
     }
 }
