@@ -74,10 +74,9 @@ public class PieceRenderer {
      * @param transform the position of the piece to be rendered at
      */
     public static void drawPiece(final SaltyGraphics g, final byte piece, final Transform transform) {
-        if (piece == NONE) {
-            return;
+        if (piece != NONE) {
+            g.drawImage(imageMap.get(piece), transform.getPosition());
         }
-        g.drawImage(imageMap.get(piece), transform.getPosition());
     }
 
     /**
@@ -109,7 +108,7 @@ public class PieceRenderer {
      * @param height      the height for the image to be scaled to
      *
      * @return the sprite at the given coordinates in the given SpriteSheet
-     * sclaled to the given width and height
+     * scaled to the given width and height
      * @see ImageUtils#resize(SaltyImage, float, float, Object)
      * @see Spritesheet#getFrame(int, int)
      */
