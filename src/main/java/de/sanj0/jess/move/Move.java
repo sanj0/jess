@@ -3,6 +3,8 @@ package de.sanj0.jess.move;
 import de.sanj0.jess.Board;
 import de.sanj0.jess.Piece;
 
+import java.util.Arrays;
+
 /**
  * A move has to indices it affects, the start square and the end square. Both
  * have a before and an after state.
@@ -155,6 +157,22 @@ public class Move {
         board[indices[1]] = beforeState[1];
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Move move = (Move) o;
+        return Arrays.equals(indices, move.indices) && Arrays.equals(beforeState, move.beforeState) && Arrays.equals(afterState, move.afterState);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(indices);
+        result = 31 * result + Arrays.hashCode(beforeState);
+        result = 31 * result + Arrays.hashCode(afterState);
+        return result;
+    }
+
     /**
      * Gets {@link #indices}.
      *
@@ -182,7 +200,7 @@ public class Move {
         return afterState;
     }
 
-    //TODO(sanj0) actualy notation
+    //TODO(sanj0) actual notation
     public String notation() {
         return indices[0] + "-" + indices[1];
     }
