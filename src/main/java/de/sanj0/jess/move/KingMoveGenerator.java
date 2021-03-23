@@ -52,11 +52,27 @@ public class KingMoveGenerator extends MoveGenerator {
         moves.removeIf(i -> Piece.color(board[i]) == myColor);
         // add castle moves - no matter the rights atm
         if (myColor == Piece.LIGHT) {
-            moves.add(CastleMove.LIGHT_KING_SIDE_CASTLE);
-            moves.add(CastleMove.LIGHT_QUEEN_SIDE_CASTLE);
+            if (MoveState.allowedCastles.contains(CastleMove.CastleType.KING_SIDE_LIGHT)) {
+                if (board[61] == Piece.NONE && board[62] == Piece.NONE) {
+                    moves.add(CastleMove.LIGHT_KING_SIDE_CASTLE);
+                }
+            }
+            if (MoveState.allowedCastles.contains(CastleMove.CastleType.QUEEN_SIDE_LIGHT)) {
+                if (board[59] == Piece.NONE && board[58] == Piece.NONE && board[57] == Piece.NONE) {
+                    moves.add(CastleMove.LIGHT_QUEEN_SIDE_CASTLE);
+                }
+            }
         } else {
-            moves.add(CastleMove.DARK_KING_SIDE_CASTLE);
-            moves.add(CastleMove.DARK_QUEEN_SIDE_CASTLE);
+            if (MoveState.allowedCastles.contains(CastleMove.CastleType.KING_SIDE_DARK)) {
+                if (board[5] == Piece.NONE && board[6] == Piece.NONE) {
+                    moves.add(CastleMove.DARK_KING_SIDE_CASTLE);
+                }
+            }
+            if (MoveState.allowedCastles.contains(CastleMove.CastleType.QUEEN_SIDE_DARK)) {
+                if (board[3] == Piece.NONE && board[2] == Piece.NONE && board[1] == Piece.NONE) {
+                    moves.add(CastleMove.DARK_QUEEN_SIDE_CASTLE);
+                }
+            }
         }
     }
 }

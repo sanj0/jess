@@ -19,7 +19,12 @@ public class MoveState {
 
     private byte colorToMove = Piece.LIGHT;
 
-    private List<CastleMove.CastleType> allowedCastles = new ArrayList<>();
+    public static List<CastleMove.CastleType> allowedCastles = new ArrayList<CastleMove.CastleType>() {{
+        add(CastleMove.CastleType.KING_SIDE_LIGHT);
+        add(CastleMove.CastleType.QUEEN_SIDE_LIGHT);
+        add(CastleMove.CastleType.KING_SIDE_DARK);
+        add(CastleMove.CastleType.QUEEN_SIDE_DARK);
+    }};
 
     private final Stack<Move> moveStack = new Stack<>();
     private final Stack<Move> redoStack = new Stack<>();

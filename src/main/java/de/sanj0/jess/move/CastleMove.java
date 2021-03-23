@@ -101,6 +101,8 @@ public class CastleMove extends Move {
         board[kingMove[0]] = Piece.NONE;
         board[rookMove[1]] = rook;
         board[rookMove[0]] = Piece.NONE;
+        MoveState.allowedCastles.remove(type);
+        MoveState.allowedCastles.remove(sameColorCastle(type));
     }
 
     @Override
@@ -111,6 +113,21 @@ public class CastleMove extends Move {
         board[kingMove[1]] = Piece.NONE;
         board[rookMove[0]] = rook;
         board[rookMove[1]] = Piece.NONE;
+        MoveState.allowedCastles.add(type);
+    }
+
+    private CastleType sameColorCastle(final CastleType t) {
+        switch (t) {
+            case KING_SIDE_LIGHT:
+                return CastleType.QUEEN_SIDE_LIGHT;
+            case KING_SIDE_DARK:
+                return CastleType.QUEEN_SIDE_DARK;
+            case QUEEN_SIDE_LIGHT:
+                return CastleType.KING_SIDE_LIGHT;
+            case QUEEN_SIDE_DARK:
+                return CastleType.KING_SIDE_DARK;
+        }
+        return null;
     }
 
     @Override
