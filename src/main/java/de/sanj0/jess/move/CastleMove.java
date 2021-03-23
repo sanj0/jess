@@ -2,6 +2,9 @@ package de.sanj0.jess.move;
 
 import de.sanj0.jess.Piece;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 public class CastleMove extends Move {
 
     public static final int LIGHT_KING_SIDE_CASTLE = 62;
@@ -12,6 +15,11 @@ public class CastleMove extends Move {
     private final CastleType type;
     private final byte king;
     private final byte rook;
+
+    public static Collection<CastleType> allCastles() {
+        return Arrays.asList(CastleType.KING_SIDE_LIGHT, CastleType.QUEEN_SIDE_LIGHT, CastleType.KING_SIDE_DARK, CastleType.QUEEN_SIDE_DARK);
+    }
+
     public enum CastleType {
         // king: 60-62; rook: 63-61
         KING_SIDE_LIGHT,

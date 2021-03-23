@@ -45,12 +45,11 @@ public class Moves {
     }
 
     private static boolean isCastle(final byte[] position, final int start, final int end) {
-        //TODO(sanj0): check castle rights
         if (Piece.isKing(position[start])) {
-            return true;
-        } else {
-            return false;
+            // check if the king is still in its original position
+            return Piece.startingIndex(position[start]).contains(start);
         }
+        return false;
     }
 
     private static List<Integer> allPseudoLegalMoves(final byte[] board, final byte color) {

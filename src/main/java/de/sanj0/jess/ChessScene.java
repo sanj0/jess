@@ -7,6 +7,7 @@ import de.edgelord.saltyengine.scene.Scene;
 import de.edgelord.saltyengine.transform.Vector2f;
 import de.sanj0.jess.marks.Arrow;
 import de.sanj0.jess.marks.SquareMark;
+import de.sanj0.jess.move.CastleMove;
 import de.sanj0.jess.move.Move;
 import de.sanj0.jess.move.MoveState;
 import de.sanj0.jess.move.Moves;
@@ -138,6 +139,7 @@ public class ChessScene extends Scene {
                     board.setPosition(BoardPositions.parseFEN(Main.STARTING_FEN));
                     boardRenderer.getMoveState().clearMoveStacks();
                     boardRenderer.getMoveState().setColorToMove(Piece.LIGHT);
+                    MoveState.allowedCastles.addAll(CastleMove.allCastles());
                 } else if (e.getKeyChar() == 'm') {
                     // make the AI make the next move
                     final MoveState moveState = boardRenderer.getMoveState();
