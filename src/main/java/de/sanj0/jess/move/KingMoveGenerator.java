@@ -50,5 +50,13 @@ public class KingMoveGenerator extends MoveGenerator {
     protected void removeFriendlyFire(final List<Integer> moves, final byte[] board, final int myIndex) {
         final byte myColor = Piece.color(board[myIndex]);
         moves.removeIf(i -> Piece.color(board[i]) == myColor);
+        // add castle moves - no matter the rights atm
+        if (myColor == Piece.LIGHT) {
+            moves.add(CastleMove.LIGHT_KING_SIDE_CASTLE);
+            moves.add(CastleMove.LIGHT_QUEEN_SIDE_CASTLE);
+        } else {
+            moves.add(CastleMove.DARK_KING_SIDE_CASTLE);
+            moves.add(CastleMove.DARK_QUEEN_SIDE_CASTLE);
+        }
     }
 }
