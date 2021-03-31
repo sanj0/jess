@@ -80,20 +80,18 @@ public class ChessScene extends Scene {
                     moveState.setDraggedPieceIndex(-1);
                     moveState.setDraggedPiece(Piece.NONE);
                     moveState.setLegalMoves(new ArrayList<>());
-                } else if (e.getButton() == MouseEvent.BUTTON3) {
-                    if (arrowStart != null) {
-                        final Vector2f arrowEnd = BoardRenderer.centreOfHoveredSquare(e.getX(), e.getY());
-                        if (arrowStart.equals(arrowEnd)) {
-                            // toggle mark instead
-                            final int x = (int) (arrowStart.getX() - BoardRenderer.SQUARE_SIZE.getWidth() * .5f);
-                            final int y = (int) (arrowStart.getY() - BoardRenderer.SQUARE_SIZE.getHeight() * .5f);
-                            boardRenderer.getMoveState().toggleSquareMark(new SquareMark(new Vector2f(x, y)));
-                        } else {
-                            // toggle arrow
-                            boardRenderer.getMoveState().toggleArrow(new Arrow(arrowStart, arrowEnd));
-                        }
-                        arrowStart = null;
+                } else if (e.getButton() == MouseEvent.BUTTON3 && arrowStart != null) {
+                    final Vector2f arrowEnd = BoardRenderer.centreOfHoveredSquare(e.getX(), e.getY());
+                    if (arrowStart.equals(arrowEnd)) {
+                        // toggle mark instead
+                        final int x = (int) (arrowStart.getX() - BoardRenderer.SQUARE_SIZE.getWidth() * .5f);
+                        final int y = (int) (arrowStart.getY() - BoardRenderer.SQUARE_SIZE.getHeight() * .5f);
+                        boardRenderer.getMoveState().toggleSquareMark(new SquareMark(new Vector2f(x, y)));
+                    } else {
+                        // toggle arrow
+                        boardRenderer.getMoveState().toggleArrow(new Arrow(arrowStart, arrowEnd));
                     }
+                        arrowStart = null;
                 }
             }
 
