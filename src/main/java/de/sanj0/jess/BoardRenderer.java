@@ -20,6 +20,8 @@ import java.util.Arrays;
  */
 public class BoardRenderer extends DrawingRoutine {
 
+    public static final Vector2f CENTRE = Game.getGameTransform().getCentre();
+
     public static final Color LIGHT_COLOR = new Color(244, 245, 215);
     public static final Color DARK_COLOR = new Color(83, 103, 47);
     public static final Color HOVER_COLOR = new Color(255, 103, 47, 127);
@@ -79,6 +81,7 @@ public class BoardRenderer extends DrawingRoutine {
 
     @Override
     public void draw(final SaltyGraphics g) {
+        g.setRotation(ChessScene.BOARD_INVERTED ? 180 : 0, Game.getGameTransform().getCentre());
         g.drawImage(boardImage, 0, 0);
 
         for (int i = 0; i < moveState.getSquareMarks().size(); i++) {
@@ -110,7 +113,7 @@ public class BoardRenderer extends DrawingRoutine {
 
             // draw piece
             if (moveState.getDraggedPieceIndex() != i) {
-                PieceRenderer.drawPiece(g, piece, new Transform(x, y, width, height));
+                PieceRenderer.drawPiece(g.copy(), piece, new Transform(x, y, width, height));
             }
 
             // update x and y
@@ -125,7 +128,7 @@ public class BoardRenderer extends DrawingRoutine {
         for (int i = 0; i < moveState.getArrows().size(); i++) {
             moveState.getArrows().get(i).draw(g.copy());
         }
-        final Vector2f cursor = Input.getCursorPosition();
+        final Vector2f cursor = JessUtils.rotate(Input.getCursorPosition(), Math.toRadians(ChessScene.BOARD_INVERTED ? 180 : 0), CENTRE);
         final float pieceX = cursor.getX() - width * .5f;
         final float pieceY = cursor.getY() - width * .5f;
         PieceRenderer.drawPiece(g, moveState.getDraggedPiece(), new Transform(pieceX, pieceY, width, height));

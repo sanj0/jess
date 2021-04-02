@@ -75,6 +75,7 @@ public class PieceRenderer {
      */
     public static void drawPiece(final SaltyGraphics g, final byte piece, final Transform transform) {
         if (piece != NONE) {
+            g.setRotation(ChessScene.BOARD_INVERTED ? 180 : 0, transform.getCentre());
             g.drawImage(imageMap.get(piece), transform.getPosition());
         }
     }

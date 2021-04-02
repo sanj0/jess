@@ -3,6 +3,9 @@ package de.sanj0.jess.move;
 import de.sanj0.jess.Board;
 import de.sanj0.jess.Piece;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A move has to indices it affects, the start square and the end square. Both
  * have a before and an after state.
@@ -22,6 +25,8 @@ public class Move {
      * Contains the two pieces on the two affected squares after the move
      */
     private final byte[] afterState;
+
+    private List<CastleMove.CastleType> prevokedCastleRights = new ArrayList<>(2);
 
     /**
      * constructor.
@@ -138,10 +143,35 @@ public class Move {
         final byte promotion = promotion();
         board[indices[0]] = afterState[0];
         if (promotion == Piece.NONE) {
-            board[indices[1]] = afterState[1];
+            final byte me = afterState[1];
+            board[indices[1]] = me;
+            if (Piece.isKing(me)) {
+                if (Piece.color(me) == Piece.LIGHT) {
+                    prevokedCastleRights.add(CastleMove.CastleType.KING_SIDE_LIGHT);
+                    prevokedCastleRights.add(CastleMove.CastleType.QUEEN_SIDE_LIGHT);
+                } else {
+                    prevokedCastleRights.add(CastleMove.CastleType.KING_SIDE_DARK);
+                    prevokedCastleRights.add(CastleMove.CastleType.QUEEN_SIDE_DARK);
+                }
+            } else if (Piece.isRook(me)) {
+                if (Piece.color(me) == Piece.LIGHT) {
+                    if (indices[0] == 56) {
+                        prevokedCastleRights.add(CastleMove.CastleType.QUEEN_SIDE_LIGHT);
+                    } else if (indices[0] == 63) {
+                        prevokedCastleRights.add(CastleMove.CastleType.KING_SIDE_LIGHT);
+                    }
+                } else {
+                    if (indices[0] == 0) {
+                        prevokedCastleRights.add(CastleMove.CastleType.QUEEN_SIDE_DARK);
+                    } else if (indices[0] == 7) {
+                        prevokedCastleRights.add(CastleMove.CastleType.KING_SIDE_DARK);
+                    }
+                }
+            }
         } else {
             board[indices[1]] = promotion;
         }
+        MoveState.allowedCastles.removeAll(prevokedCastleRights);
     }
 
     /**
@@ -153,6 +183,7 @@ public class Move {
     public void undoMove(final byte[] board) {
         board[indices[0]] = beforeState[0];
         board[indices[1]] = beforeState[1];
+        MoveState.allowedCastles.addAll(prevokedCastleRights);
     }
 
     /**

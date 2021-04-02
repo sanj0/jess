@@ -13,6 +13,7 @@ public class PawnMoveGenerator extends MoveGenerator {
         final byte color = Piece.color(board[position]);
         boolean isSingleAdvancePossible = false;
         if (color == Piece.DARK) {
+            //FIXME: array index out of bounds possible
             isSingleAdvancePossible = board[position + 8] == Piece.NONE;
             // normal +1 extend if the square is empty and in bounds
             addIfEmptyAndInBounds(moves, board, position + 8);
@@ -29,6 +30,7 @@ public class PawnMoveGenerator extends MoveGenerator {
                 addIfEmptyAndInBounds(moves, board, position + 16);
             }
         } else if (color == Piece.LIGHT) {
+            //FIXME: array index out of bounds possible
             isSingleAdvancePossible = board[position - 8] == Piece.NONE;
             // normal +1 extend if the square is empty and in bounds
             addIfEmptyAndInBounds(moves, board, position - 8);

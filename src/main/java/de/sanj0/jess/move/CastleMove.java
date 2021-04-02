@@ -2,16 +2,24 @@ package de.sanj0.jess.move;
 
 import de.sanj0.jess.Piece;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 public class CastleMove extends Move {
 
-    public static final int LIGHT_KING_SIDE_CASTLE = -1;
-    public static final int LIGHT_QUEEN_SIDE_CASTLE = -2;
-    public static final int DARK_KING_SIDE_CASTLE = -3;
-    public static final int DARK_QUEEN_SIDE_CASTLE = -4;
+    public static final int LIGHT_KING_SIDE_CASTLE = 62;
+    public static final int LIGHT_QUEEN_SIDE_CASTLE = 58;
+    public static final int DARK_KING_SIDE_CASTLE = 6;
+    public static final int DARK_QUEEN_SIDE_CASTLE = 2;
 
     private final CastleType type;
     private final byte king;
     private final byte rook;
+
+    public static Collection<CastleType> allCastles() {
+        return Arrays.asList(CastleType.KING_SIDE_LIGHT, CastleType.QUEEN_SIDE_LIGHT, CastleType.KING_SIDE_DARK, CastleType.QUEEN_SIDE_DARK);
+    }
+
     public enum CastleType {
         // king: 60-62; rook: 63-61
         KING_SIDE_LIGHT,
@@ -101,6 +109,8 @@ public class CastleMove extends Move {
         board[kingMove[0]] = Piece.NONE;
         board[rookMove[1]] = rook;
         board[rookMove[0]] = Piece.NONE;
+        MoveState.allowedCastles.remove(type);
+        MoveState.allowedCastles.remove(sameColorCastle(type));
     }
 
     @Override
@@ -111,6 +121,21 @@ public class CastleMove extends Move {
         board[kingMove[1]] = Piece.NONE;
         board[rookMove[0]] = rook;
         board[rookMove[1]] = Piece.NONE;
+        MoveState.allowedCastles.add(type);
+    }
+
+    private CastleType sameColorCastle(final CastleType t) {
+        switch (t) {
+            case KING_SIDE_LIGHT:
+                return CastleType.QUEEN_SIDE_LIGHT;
+            case KING_SIDE_DARK:
+                return CastleType.QUEEN_SIDE_DARK;
+            case QUEEN_SIDE_LIGHT:
+                return CastleType.KING_SIDE_LIGHT;
+            case QUEEN_SIDE_DARK:
+                return CastleType.KING_SIDE_DARK;
+        }
+        return null;
     }
 
     @Override

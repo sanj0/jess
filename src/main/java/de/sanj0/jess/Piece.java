@@ -106,6 +106,10 @@ public class Piece {
         return type(piece) == BISHOP;
     }
 
+    public static boolean isRook(final byte piece) {
+        return type(piece) == ROOK;
+    }
+
     public static boolean isQueen(final byte piece) {
         return type(piece) == QUEEN;
     }

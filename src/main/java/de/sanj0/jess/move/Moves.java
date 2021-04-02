@@ -26,10 +26,30 @@ public class Moves {
     }};
 
     public static Move move(final byte[] position, final int startIndex, final int endIndex) {
+        if (isCastle(position, startIndex, endIndex)) {
+            switch (endIndex) {
+                case CastleMove.LIGHT_KING_SIDE_CASTLE:
+                    return CastleMove.castle(CastleMove.CastleType.KING_SIDE_LIGHT);
+                case CastleMove.LIGHT_QUEEN_SIDE_CASTLE:
+                    return CastleMove.castle(CastleMove.CastleType.QUEEN_SIDE_LIGHT);
+                case CastleMove.DARK_KING_SIDE_CASTLE:
+                    return CastleMove.castle(CastleMove.CastleType.KING_SIDE_DARK);
+                case CastleMove.DARK_QUEEN_SIDE_CASTLE:
+                    return CastleMove.castle(CastleMove.CastleType.QUEEN_SIDE_DARK);
+            }
+        }
         final int[] indices = {startIndex, endIndex};
         final byte[] before = {position[startIndex], position[endIndex]};
         final byte[] after = {Piece.NONE, position[startIndex]};
         return new Move(indices, before, after);
+    }
+
+    private static boolean isCastle(final byte[] position, final int start, final int end) {
+        if (Piece.isKing(position[start])) {
+            // check if the king is still in its original position
+            return Piece.startingIndex(position[start]).contains(start);
+        }
+        return false;
     }
 
     private static List<Integer> allPseudoLegalMoves(final byte[] board, final byte color) {
