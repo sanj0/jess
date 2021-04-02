@@ -54,5 +54,24 @@ java -jar bin/jess.jar
 ```
 
 ## How to use Jess
-
-
+When started via a command line, a single passed argument makes Jess interpret
+that argument as a FEN position, the game will start in this position. Note that
+only the position will be processed and castle rights, en passant and color to move
+will be ignored. Also Note that in case you have a complete FEN with spaces in between
+the parts, you will have to either quote the whole string or remove the (anyway redundant)
+additional parts so that the argument count is 1.
+#### 1. How to move
+You can move piece of the color of turn by dragging one of them to a legal destination
+square. Once a piece was picked up, all legal moves will be highlighted
+#### 2. How to make Chessica move
+You can always make chessica move the current turn by pressing 'm' on your keyboard.
+When you want her to make every following move of the color that is **not** currently
+on turn, press 'a' (when 'a' is for example pressed before the first move, Chessica
+will play every move for the black pieces). Pressing 'a' again will disable it.
+#### 3. All keyboard shortcuts
+- 'm': make chessica do the current move on turn
+- 'a': (toggleable) make chessiace play every next move by the color **not** currently on turn
+- arrow left: undo a move (can mess up castle rights)
+- arrow right: redo a move (can mess up castle rights)
+- 'r': reset the game to the position Jess was started with
+- 'i': invert the chess board
