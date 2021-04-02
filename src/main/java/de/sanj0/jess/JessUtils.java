@@ -1,5 +1,7 @@
 package de.sanj0.jess;
 
+import de.edgelord.saltyengine.transform.Vector2f;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,5 +22,12 @@ public class JessUtils {
         }
 
         return list;
+    }
+
+    public static Vector2f rotate(final Vector2f point, final double theta, final Vector2f anchor) {
+        final double s = Math.sin(theta);
+        final double c = Math.cos(theta);
+        return new Vector2f((float) (c * (point.getX() - anchor.getX()) - s * (point.getY() - anchor.getY()) + anchor.getX()),
+                (float) (s * (point.getX() - anchor.getX()) + c * (point.getY() - anchor.getY()) + anchor.getY()));
     }
 }

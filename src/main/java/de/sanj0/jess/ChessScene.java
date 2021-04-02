@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 public class ChessScene extends Scene {
 
+    public static boolean BOARD_INVERTED = false;
+
     private final Board board;
     private final BoardRenderer boardRenderer;
 
@@ -46,27 +48,29 @@ public class ChessScene extends Scene {
 
             @Override
             public void mousePressed(final MouseEvent e) {
+                final Vector2f mouse = mousePosition(e);
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     final MoveState moveState = boardRenderer.getMoveState();
-                    final int draggedPieceIndex = BoardRenderer.indexOfPosition(e.getX(), e.getY());
+                    final int draggedPieceIndex = BoardRenderer.indexOfPosition(mouse.getX(), mouse.getY());
                     moveState.setDraggedPieceIndex(draggedPieceIndex);
                     moveState.setDraggedPiece(board.getPosition()[draggedPieceIndex]);
                     moveState.setLegalMoves(Moves.legalMoves(board.getPosition(), moveState.getDraggedPieceIndex(), moveState));
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
-                    arrowStart = BoardRenderer.centreOfHoveredSquare(e.getX(), e.getY());
+                    arrowStart = BoardRenderer.centreOfHoveredSquare(mouse.getX(), mouse.getY());
                 }
             }
 
             @Override
             public void mouseReleased(final MouseEvent e) {
+                final Vector2f mouse = mousePosition(e);
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     final MoveState moveState = boardRenderer.getMoveState();
                     // check if square is legal and make the move or
                     // move back to origin
-                    final int position = BoardRenderer.indexOfPosition(e.getX(), e.getY());
+                    final int position = BoardRenderer.indexOfPosition(mouse.getX(), mouse.getY());
                     if (moveState.getLegalMoves().contains(position)) {
                         if (position != moveState.getDraggedPieceIndex()) {
-                            final Move move = Moves.move(board.getPosition(), moveState.getDraggedPieceIndex(), BoardRenderer.indexOfPosition(e.getX(), e.getY()));
+                            final Move move = Moves.move(board.getPosition(), moveState.getDraggedPieceIndex(), position);
                             move.doMove(board.getPosition());
                             moveState.nextTurn();
                             moveState.pushMove(move);
@@ -81,7 +85,7 @@ public class ChessScene extends Scene {
                     moveState.setDraggedPiece(Piece.NONE);
                     moveState.setLegalMoves(new ArrayList<>());
                 } else if (e.getButton() == MouseEvent.BUTTON3 && arrowStart != null) {
-                    final Vector2f arrowEnd = BoardRenderer.centreOfHoveredSquare(e.getX(), e.getY());
+                    final Vector2f arrowEnd = BoardRenderer.centreOfHoveredSquare(mouse.getX(), mouse.getY());
                     if (arrowStart.equals(arrowEnd)) {
                         // toggle mark instead
                         final int x = (int) (arrowStart.getX() - BoardRenderer.SQUARE_SIZE.getWidth() * .5f);
@@ -91,13 +95,14 @@ public class ChessScene extends Scene {
                         // toggle arrow
                         boardRenderer.getMoveState().toggleArrow(new Arrow(arrowStart, arrowEnd));
                     }
-                        arrowStart = null;
+                    arrowStart = null;
                 }
             }
 
             @Override
             public void mouseMoved(final MouseEvent e) {
-                boardRenderer.getMoveState().setHoveredSquare(BoardRenderer.indexOfPosition(e.getX(), e.getY()));
+                final Vector2f mouse = mousePosition(e);
+                boardRenderer.getMoveState().setHoveredSquare(BoardRenderer.indexOfPosition(mouse.getX(), mouse.getY()));
             }
         });
 
@@ -148,8 +153,14 @@ public class ChessScene extends Scene {
                     autoMove = !autoMove;
                     System.out.println("auto move " + (autoMove ? "on" : "off") + " - Chessica " + (autoMove ? "will" : "will not") +
                             " automatically move the enemy pieces.");
+                } else if (e.getKeyChar() == 'i') {
+                    BOARD_INVERTED = !BOARD_INVERTED;
                 }
             }
         });
+    }
+
+    private Vector2f mousePosition(final MouseEvent e) {
+        return JessUtils.rotate(new Vector2f(e.getX(), e.getY()), Math.toRadians(BOARD_INVERTED ? 180 : 0), BoardRenderer.CENTRE);
     }
 }

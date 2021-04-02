@@ -77,6 +77,7 @@ public class PieceRenderer {
         if (piece == NONE) {
             return;
         }
+        g.setRotation(ChessScene.BOARD_INVERTED ? 180 : 0, transform.getCentre());
         g.drawImage(imageMap.get(piece), transform.getPosition());
     }
 
