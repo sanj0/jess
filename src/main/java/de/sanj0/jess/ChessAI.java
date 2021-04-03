@@ -55,8 +55,10 @@ public class ChessAI {
 
         if (allResponses.isEmpty()) {
             if ((DEPTH - depth) % 2 == 1) {
+                // we would get mated
                 return Integer.MIN_VALUE + 1;
             } else {
+                // stalemate - make bad if we aren't behind
                 return Integer.MAX_VALUE;
             }
         }

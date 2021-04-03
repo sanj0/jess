@@ -74,6 +74,10 @@ public class Piece {
         }
     }
 
+    public static int valueForRating(final byte piece) {
+        return value(piece) * 7;
+    }
+
     public static byte get(final byte type, final byte color) {
         return (byte) (type | color);
     }

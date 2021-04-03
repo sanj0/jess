@@ -45,11 +45,11 @@ public class Move {
 
     public int rating(final byte[] board) {
         final byte capturedPiece = beforeState[1];
-        final int promotionRating = promotion() != Piece.NONE ? 8 : 0;
+        final int promotionRating = promotion() != Piece.NONE ? Piece.valueForRating(Piece.QUEEN) : 0;
         if (capturedPiece == Piece.NONE) {
             return ratingByPosition(board) + promotionRating;
         } else {
-            return Piece.value(capturedPiece) * 5 + ratingByPosition(board) + promotionRating;
+            return Piece.valueForRating(capturedPiece) + ratingByPosition(board) + promotionRating;
         }
     }
 
@@ -85,7 +85,8 @@ public class Move {
         int centreModifier = isCentrePawn ? 2 : 1;
         int doubleAdvanceCentreModifier = isCentrePawn && Math.abs(indices[0] - indices[1]) == 16
                 ? 2 : 0;
-        int endgameModifier = Board.endgame(board) > .5 ? 0 : -1;
+        double endgame = Board.endgame(board);
+        int endgameModifier = endgame > .5 ? (endgame > .65 ? 5 : 0) : -1;
 
         return centreModifier + endgameModifier + doubleAdvanceCentreModifier;
     }

@@ -103,15 +103,17 @@ public class Moves {
         final byte enemyColor = Piece.oppositeColor(myColor);
         final int myKing = kingPosition(board, myColor);
 
-        outerloop:
         for (final int m : pseudolegalMoves) {
             final List<Integer> allResponses = allPseudoLegalMoves(move(board, position, m).boardAfterMove(board), enemyColor);
+            boolean addMove = true;
             for (final int r : allResponses) {
                 if (r == (myKing == position ? m : myKing)) {
-                    continue outerloop;
+                    addMove = false;
+                    break;
                 }
             }
-            legalMoves.add(m);
+            if (addMove)
+                legalMoves.add(m);
         }
 
         return legalMoves;
@@ -127,11 +129,6 @@ public class Moves {
         }
 
         return -1;
-    }
-
-    private static List<Integer> kingMoves(final int position) {
-        return new ArrayList<>(Arrays.asList(
-                position - 9, position - 8, position - 7, position - 1, position + 1, position + 7, position + 8, position + 9));
     }
 
     public static int freeSquaresUp(final int position) {
