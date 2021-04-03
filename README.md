@@ -70,8 +70,15 @@ on turn, press 'a' (when 'a' is for example pressed before the first move, Chess
 will play every move for the black pieces). Pressing 'a' again will disable it.
 #### 3. All keyboard shortcuts
 - 'm': make chessica do the current move on turn
-- 'a': (toggleable) make chessiace play every next move by the color **not** currently on turn
+- 'a': (toggleable) make chessica play every next move by the color **not** currently on turn
 - arrow left: undo a move (can mess up castle rights)
 - arrow right: redo a move (can mess up castle rights)
 - 'r': reset the game to the position Jess was started with
 - 'i': invert the chess board
+
+## Known issues
+- castle rights and en passant are stored statically; therefore the AI doesn't know
+these moves are possible until right before, they are thus not (or wrongly) calculated in
+- castle rights are not correct, you can castle out of check and over check (not into check though)
+- move generation is technically doubled as for every move, the engine has to calculate
+every pseudo-legal response in order to tell if the move would result in a check on yourself
