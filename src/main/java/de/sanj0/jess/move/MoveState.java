@@ -19,6 +19,8 @@ public class MoveState {
 
     private byte colorToMove = Piece.LIGHT;
 
+    public static Move lastMove = null;
+
     public static List<CastleMove.CastleType> allowedCastles = new ArrayList<CastleMove.CastleType>() {{
         add(CastleMove.CastleType.KING_SIDE_LIGHT);
         add(CastleMove.CastleType.QUEEN_SIDE_LIGHT);
@@ -60,6 +62,7 @@ public class MoveState {
         if (!moveStack.isEmpty()) {
             final Move move = moveStack.pop();
             move.undoMove(board);
+            lastMove = moveStack.peek();
             redoStack.push(move);
             return true;
         }

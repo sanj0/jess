@@ -9,6 +9,7 @@ import de.edgelord.saltyengine.input.Input;
 import de.edgelord.saltyengine.transform.Dimensions;
 import de.edgelord.saltyengine.transform.Transform;
 import de.edgelord.saltyengine.transform.Vector2f;
+import de.sanj0.jess.move.Move;
 import de.sanj0.jess.move.MoveState;
 
 import java.awt.*;
@@ -25,6 +26,7 @@ public class BoardRenderer extends DrawingRoutine {
     public static final Color LIGHT_COLOR = new Color(244, 245, 215);
     public static final Color DARK_COLOR = new Color(83, 103, 47);
     public static final Color HOVER_COLOR = new Color(255, 103, 47, 127);
+    public static final Color LAST_MOVE_COLOR = new Color(60, 169, 235, 127);
     public static final Color LEGAL_MOVE_COLOR = new Color(255, 109, 172, 127);
     public static final Vector2f origin = Vector2f.zero();
     public static final Dimensions SQUARE_SIZE = new Dimensions(100, 100);
@@ -108,6 +110,11 @@ public class BoardRenderer extends DrawingRoutine {
             // highlight the hovered square
             if (moveState.getHoveredSquare() == i) {
                 g.setColor(HOVER_COLOR);
+                g.drawRect(x, y, width, height);
+            }
+
+            if (MoveState.lastMove != null && (i == MoveState.lastMove.getIndices()[0] || i == MoveState.lastMove.getIndices()[1])) {
+                g.setColor(LAST_MOVE_COLOR);
                 g.drawRect(x, y, width, height);
             }
 

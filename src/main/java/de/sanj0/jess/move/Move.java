@@ -173,6 +173,7 @@ public class Move {
             board[indices[1]] = promotion;
         }
         MoveState.allowedCastles.removeAll(prevokedCastleRights);
+        MoveState.lastMove = this;
     }
 
     /**
